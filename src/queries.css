@@ -1,0 +1,114 @@
+/* ***************************** */
+/* 1091 / 16 = 68 (84 * 16 = 1344) */
+/* BELOW 1088px (Tablets) */
+/* ***************************** */
+@media (max-width: 68em) {
+  .card-list {
+    font-size: 2.8rem;
+    width: 11rem;
+    height: 9rem;
+  }
+}
+
+/* ***************************** */
+/* BELOW 910px */
+/* ***************************** */
+@media (max-width: 56em) {
+  .card-list {
+    width: 10rem;
+    height: 8rem;
+  }
+}
+
+/* ***************************** */
+/* BELOW 855px */
+/* ***************************** */
+@media (max-width: 53em) {
+  .card-list {
+    font-size: 2.2rem;
+    width: 9rem;
+    height: 7rem;
+  }
+}
+
+/* ***************************** */
+/* BELOW 784px */
+/* ***************************** */
+@media (max-width: 49em) {
+  .card {
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 1.5rem;
+  }
+
+  .card-list {
+    font-size: 2.8rem;
+    width: 11rem;
+    height: 9rem;
+  }
+
+  .heading-tertiary {
+    transform: none;
+  }
+}
+
+/* ***************************** */
+/* BELOW 640px */
+/* ***************************** */
+@media (max-width: 40em) {
+  .card-list {
+    width: 9rem;
+    height: 7rem;
+  }
+}
+
+/* ***************************** */
+/* BELOW 523px */
+/* ***************************** */
+@media (max-width: 32em) {
+  .card {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .card-list {
+    font-size: 2.8rem;
+    width: 11rem;
+    height: 9rem;
+  }
+}
+
+/* ***************************** */
+/* BELOW 413px */
+/* ***************************** */
+@media (max-width: 25em) {
+  .card-list {
+    font-size: 2.2rem;
+    width: 8rem;
+    height: 7rem;
+  }
+}
+
+/* ***************************** */
+/* BELOW 321px */
+/* ***************************** */
+@media (max-width: 20em) {
+  .card {
+    grid-template-columns: 1fr;
+  }
+
+  .card-list {
+    font-size: 3.2rem;
+    width: 12rem;
+    height: 9rem;
+  }
+}
+
+/* ***************************** */
+/* BELOW 212px */
+/* ***************************** */
+@media (max-width: 13em) {
+  .card-list {
+    font-size: 2rem;
+    width: 7rem;
+    height: 6rem;
+  }
+}
