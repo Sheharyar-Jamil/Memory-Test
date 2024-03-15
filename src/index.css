@@ -87,3 +87,8 @@ body {
   font-weight: bold;
   color: #355275;
 }
+
+.red {
+  background-color: #c0392b;
+  fill: #fff;
+}

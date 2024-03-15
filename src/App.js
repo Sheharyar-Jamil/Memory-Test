@@ -89,6 +89,7 @@ function App() {
   const [timer, setTimer] = useState(0);
   const [timerStarted, setTimerStarted] = useState(false);
   const [score, setScore] = useState(0);
+  const [matchCards, setMatchCards] = useState([]);
 
   useEffect(() => {
     let intervalID;
@@ -100,14 +101,44 @@ function App() {
     return () => clearInterval(intervalID);
   }, [timerStarted]);
 
+  useEffect(() => {
+    const shuffleCards = getRandomImage();
+    setSelectedObj(shuffleCards);
+  }, []);
+
+  function getRandomImage() {
+    const shuffleCard = [...initialCard].sort(() => Math.random() - 0.5);
+    return shuffleCard.slice(0, 8);
+  }
+
   function handleSelectObject(id, obj) {
     console.log(id, obj);
+
+    // If user selected same card again
+    if (id === selectedObj || matchCards.includes(obj)) return;
+
+    // If it is first selection
+    if (selectedObj === null) {
+      setSelectedObj(id);
+      setPrevSelectedObj(obj);
+      return;
+    }
     if (obj === prevSelectedObj) {
       setScore(function (score) {
-        return score + 1;
+        return score + move * 2;
       });
+
+      setMatchCards(function (matchCards) {
+        return [...matchCards, obj];
+      });
+    } else {
+      // If not matched reset selection after short delay
+      setTimeout(() => {
+        setSelectedObj(null);
+        setPrevSelectedObj(null);
+      }, 3000);
     }
-    setSelectedObj(id !== selectedObj ? id : null);
+    setSelectedObj(id);
     setMove(function (move) {
       return move + 1;
     });
@@ -124,7 +155,11 @@ function App() {
       </div>
       <Score score={score} />
       <MemoryTest />
-      <Card onSelectedObj={handleSelectObject} selectedObj={selectedObj} />
+      <Card
+        onSelectedObj={handleSelectObject}
+        selectedObj={selectedObj}
+        matchCards={matchCards}
+      />
     </div>
   );
 }
@@ -137,7 +172,7 @@ function MemoryTest() {
   );
 }
 
-function Card({ onSelectedObj, selectedObj }) {
+function Card({ onSelectedObj, selectedObj, matchCards }) {
   const cards = initialCard;
   return (
     <div className="card-section">
@@ -149,6 +184,7 @@ function Card({ onSelectedObj, selectedObj }) {
               key={card.id}
               onSelectedObj={onSelectedObj}
               selectedObj={selectedObj}
+              matchCards={matchCards}
             />
           );
         })}
@@ -157,15 +193,15 @@ function Card({ onSelectedObj, selectedObj }) {
   );
 }
 
-function Cards({ cardObj, onSelectedObj, selectedObj }) {
+function Cards({ cardObj, onSelectedObj, selectedObj, matchCards }) {
   const isSelected = selectedObj === cardObj.id;
   return (
     <>
       <li
-        className="card-list"
+        className={`card-list ${matchCards.includes(cardObj.obj) ? "red" : ""}`}
         onClick={() => onSelectedObj(cardObj.id, cardObj.obj)}
       >
-        {isSelected && cardObj.obj}
+        {isSelected || matchCards.includes(cardObj.obj) ? cardObj.obj : ""}
       </li>
     </>
   );
