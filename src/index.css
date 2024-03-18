@@ -30,6 +30,9 @@ body {
 .card-section {
   width: 60%;
   margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .card {
@@ -91,4 +94,20 @@ body {
 .red {
   background-color: #c0392b;
   fill: #fff;
+}
+.btn {
+  border: none;
+  font-size: 1.8rem;
+  background-color: #2e3d49;
+  color: #fff;
+  padding: 1.6rem 3.8rem;
+  border-radius: 7px;
+  margin-top: 2.4rem;
+  cursor: pointer;
+
+  transition: all 0.3s;
+}
+
+.btn:hover {
+  background-color: #1a2631;
 }

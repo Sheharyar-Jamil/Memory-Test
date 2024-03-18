@@ -102,18 +102,29 @@ function App() {
   }, [timerStarted]);
 
   useEffect(() => {
+    const allCardsMatched = matchCards.length === initialCard.length / 2;
+    if (allCardsMatched) {
+      setTimerStarted(false);
+    }
+  }, [matchCards]);
+
+  useEffect(() => {
     const shuffleCards = getRandomImage();
     setSelectedObj(shuffleCards);
   }, []);
 
+  function allCardsMatched() {
+    return matchCards.length === initialCard.length / 2;
+  }
+
   function getRandomImage() {
-    const shuffleCard = [...initialCard].sort(() => Math.random() - 0.5);
-    return shuffleCard.slice(0, 8);
+    const shuffleCard = [...initialCard].sort(function () {
+      return Math.random() - 0.5;
+    });
+    return shuffleCard.slice(0, 16);
   }
 
   function handleSelectObject(id, obj) {
-    console.log(id, obj);
-
     // If user selected same card again
     if (id === selectedObj || matchCards.includes(obj)) return;
 
@@ -147,6 +158,15 @@ function App() {
     setTimerStarted(true);
   }
 
+  function handleRestart() {
+    setSelectedObj(null);
+    setPrevSelectedObj(null);
+    setMatchCards([]);
+    setMove(0);
+    setTimer(0);
+    setScore(0);
+  }
+
   return (
     <div className="container center">
       <div className="move-timer">
@@ -155,11 +175,18 @@ function App() {
       </div>
       <Score score={score} />
       <MemoryTest />
+
       <Card
         onSelectedObj={handleSelectObject}
         selectedObj={selectedObj}
         matchCards={matchCards}
       />
+
+      {allCardsMatched() && (
+        <button className="btn" onClick={handleRestart}>
+          Restart
+        </button>
+      )}
     </div>
   );
 }
