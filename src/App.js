@@ -83,7 +83,7 @@ const initialCard = [
 ];
 
 function App() {
-  const [selectedObj, setSelectedObj] = useState(null);
+  const [selectedObj, setSelectedObj] = useState(initialCard);
   const [prevSelectedObj, setPrevSelectedObj] = useState(null);
   const [move, setMove] = useState(0);
   const [timer, setTimer] = useState(0);
@@ -111,6 +111,7 @@ function App() {
   useEffect(() => {
     const shuffleCards = getRandomImage();
     setSelectedObj(shuffleCards);
+    console.log(shuffleCards);
   }, []);
 
   function allCardsMatched() {
@@ -121,16 +122,21 @@ function App() {
     const shuffleCard = [...initialCard].sort(function () {
       return Math.random() - 0.5;
     });
-    return shuffleCard.slice(0, 16);
+    console.log("Shuffle Card: ", shuffleCard);
+    const shuffleCardID = shuffleCard.map(function (shuffleCard, index) {
+      return { ...shuffleCard, id: index + 10 };
+    });
+    return shuffleCardID.slice(0, 16);
   }
 
   function handleSelectObject(id, obj) {
+    console.log(id);
     // If user selected same card again
-    if (id === selectedObj || matchCards.includes(obj)) return;
+    if (selectedObj.length === 0 || matchCards.includes(obj)) return;
 
     // If it is first selection
-    if (selectedObj === null) {
-      setSelectedObj(id);
+    if (selectedObj.length === 0) {
+      setSelectedObj([{ id, obj }]);
       setPrevSelectedObj(obj);
       return;
     }
@@ -140,16 +146,24 @@ function App() {
       });
 
       setMatchCards(function (matchCards) {
+        console.log("Match Cards: ", matchCards);
         return [...matchCards, obj];
       });
-    } else {
-      // If not matched reset selection after short delay
-      setTimeout(() => {
-        setSelectedObj(null);
-        setPrevSelectedObj(null);
-      }, 3000);
     }
-    setSelectedObj(id);
+
+    // Check if card is already selected
+    if (
+      selectedObj.some(function (card) {
+        return card.id === id && !matchCards.includes(obj);
+      })
+    ) {
+      return;
+    }
+    console.log("selected Obj: ", selectedObj);
+    setSelectedObj(function (prevObj) {
+      console.log("PrevObj: ", prevObj);
+      return [...prevObj, { id, obj }];
+    });
     setMove(function (move) {
       return move + 1;
     });
@@ -159,7 +173,7 @@ function App() {
   }
 
   function handleRestart() {
-    setSelectedObj(null);
+    setSelectedObj(initialCard);
     setPrevSelectedObj(null);
     setMatchCards([]);
     setMove(0);
@@ -200,11 +214,10 @@ function MemoryTest() {
 }
 
 function Card({ onSelectedObj, selectedObj, matchCards }) {
-  const cards = initialCard;
   return (
     <div className="card-section">
       <ul className="card ">
-        {cards.map(function (card) {
+        {selectedObj.map(function (card) {
           return (
             <Cards
               cardObj={card}
@@ -221,7 +234,10 @@ function Card({ onSelectedObj, selectedObj, matchCards }) {
 }
 
 function Cards({ cardObj, onSelectedObj, selectedObj, matchCards }) {
-  const isSelected = selectedObj === cardObj.id;
+  const isSelected = selectedObj.some(function (obj) {
+    return obj && obj.id === cardObj.id;
+  });
+
   return (
     <>
       <li

@@ -64,9 +64,9 @@
 /* ***************************** */
 /* BELOW 523px */
 /* ***************************** */
-@media (max-width: 32em) {
+/* @media (max-width: 32em) {
   .card {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
 
   .card-list {
@@ -74,7 +74,7 @@
     width: 11rem;
     height: 9rem;
   }
-}
+} */
 
 /* ***************************** */
 /* BELOW 413px */
@@ -92,22 +92,12 @@
 /* ***************************** */
 @media (max-width: 20em) {
   .card {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(3, 1fr);
+    row-gap: 1.2rem;
   }
 
   .card-list {
-    font-size: 3.8rem;
-    width: 12rem;
-    height: 9rem;
-  }
-}
-
-/* ***************************** */
-/* BELOW 212px */
-/* ***************************** */
-@media (max-width: 13em) {
-  .card-list {
-    font-size: 2rem;
+    font-size: 2.4rem;
     width: 7rem;
     height: 6rem;
   }
